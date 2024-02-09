@@ -1,0 +1,35 @@
+
+-- name: GetAllContacts :many
+SELECT first_name, last_name, phone, email 
+FROM contacts 
+ORDER BY last_name, first_name;
+
+-- name: GetContact :one
+SELECT first_name, last_name, phone, email 
+FROM contacts
+WHERE id=? ;
+
+-- name: SearchContacts :many
+SELECT first_name, last_name, phone, email 
+FROM contacts
+WHERE 0
+OR first_name LIKE '%?%'
+OR last_name LIKE '%?%'
+OR phone LIKE '%?%'
+OR email LIKE '%?%' ;
+
+-- name: AddContact :one
+INSERT OR IGNORE INTO contacts
+(first_name, last_name, phone, email)
+VALUES (?, ?, ?, ?) 
+RETURNING first_name, last_name, phone, email ;
+
+-- name: UpdateContact :one
+UPDATE contacts
+SET first_name=?, last_name=?, phone=?, email=?
+WHERE id=? 
+RETURNING first_name, last_name, phone, email ;
+
+-- name DeleteContact 
+DELETE FROM contacts WHERE id=? ;
+

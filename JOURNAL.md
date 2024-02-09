@@ -1,4 +1,15 @@
 
+TODO:
+
+- [x] inside `/src/internal/`, write preliminary build files for _SQLc_
+  __without__ running _SQLc_ for now.
+- [ ] Read Chapter 3 in the HTMX Bible to find out about requirements
+  for pages and templates.
+- [ ] inside `/src/views/`, write the templates for the implementation 
+  of the chapter 3 project.
+- [ ] implement the project as a fiber project.
+
+
 ## 2024-02-08 19:01
 
 These are the steps I took to get Go and Fiber up and running:
