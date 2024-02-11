@@ -25,12 +25,13 @@ func GetContacts(c *fiber.Ctx) error {
 
 	if searchTerm == "" {
 		// => return all contacts as a list
-		contacts, err := db.Qs.GetAllContacts(ctx)
+		rawContacts, err := db.Qs.GetAllContacts(ctx)
 		if err != nil {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"status":  "Not Found",
 				"message": "Nothing Found"})
 		}
+		contacts := getProperContacts(rawContacts)
 		return c.JSON(contacts)
 	}
 
@@ -38,3 +39,5 @@ func GetContacts(c *fiber.Ctx) error {
 	return c.SendString(
 		fmt.Sprintf("We have a search string: '%s'", searchTerm))
 }
+
+// vim: foldmethod=indent

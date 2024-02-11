@@ -1,10 +1,17 @@
 
-TODO:
+## TODO:
 
 - [ ] inside `/src/views/`, write the templates for the implementation 
       of the chapter 3 project; steal the Markup from their project repository.
 - [ ] implement the project as a fiber project. May be tricky because of paths
       and templates.
+
+## 2024-02-11 19:47
+
+Another milestone. I built a conversion function to turn raw SQLc data into
+something I can work with. It's a simple helper function I can now use whenever
+I need proper database results.
+
 
 ## 2024-02-11 17:57
 
