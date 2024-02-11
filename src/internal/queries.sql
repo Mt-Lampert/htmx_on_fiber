@@ -13,10 +13,10 @@ WHERE id=? ;
 SELECT *
 FROM contacts
 WHERE 0
-OR first_name LIKE '%?%'
-OR last_name LIKE '%?%'
-OR phone LIKE '%?%'
-OR email LIKE '%?%' ;
+OR first_name LIKE ?
+OR last_name LIKE ?
+OR phone LIKE ?
+OR email LIKE ? ;
 
 -- name: AddContact :one
 INSERT OR IGNORE INTO contacts
