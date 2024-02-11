@@ -1,18 +1,18 @@
 
 TODO:
 
-- [x] inside `/src/internal/`, write preliminary build files for _SQLc_
-      __without__ running _SQLc_ for now.
-- [ ] Read Chapter 3 in the HTMX Bible to find out about requirements
-      for pages and templates.
-- [ ] build SQLc system; may be tricky
-- [ ] copy `db.Setup()` from Obsidian into project and into templates
 - [ ] inside `/src/views/`, write the templates for the implementation 
-      of the chapter 3 project.
+      of the chapter 3 project; steal the Markup from their project repository.
 - [ ] implement the project as a fiber project. May be tricky because of paths
       and templates.
 
 ## 2024-02-11 17:57
+
+- [x] inside `/src/internal/`, write preliminary build files for _SQLc_
+      __without__ running _SQLc_ for now.
+- [x] build SQLc system; may be tricky
+- [x] copy `db.Setup()` from Obsidian into project and into templates
+- [x] test basic functionality of SQLc using a JSON dump.
 
 I learned a lot again. SQLc works like a breeze, but it has its quirks. One of
 them is the handling of `NULL` values in the database.
@@ -30,7 +30,8 @@ type Contact struct {
 }
 ```
 
-This has consequences. When SQLc returns aA `Null*` type property, from a database request, it does it like this:
+This has consequences. When SQLc returns aA `Null*` type property, from a
+database request, it does it like this:
 
 ```json
 [
@@ -55,7 +56,7 @@ This has consequences. When SQLc returns aA `Null*` type property, from a databa
             "String": "1-917-4890931",
             "Valid": true
         }
-    }                   b  
+    }
 ]
 ```
 
@@ -66,6 +67,8 @@ the database, in the model its `Valid` property will be `true`, otherwise
 For us this means that we have to write a helper function that converts this
 result to a result we want to work with down the road.
 
+The [official Documentation](https://pkg.go.dev/database/sql#NullString) gives
+a roadmap on what to do. Simple but tedious.
 
 ## 2024-02-11 11:20
 
