@@ -22,3 +22,8 @@ go.work
 
 # ignore the go mod sum file
 go.sum
+
+# ignore static assets
+static/js/
+static/missing.min.css
+static/img/spinning-circles.svg
