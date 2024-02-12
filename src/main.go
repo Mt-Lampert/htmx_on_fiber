@@ -40,7 +40,7 @@ func GetContacts(c *fiber.Ctx) error {
 		return c.Render("pages/contacts", fiber.Map{
 			"contacts": contacts,
 			"query":    searchTerm,
-		}, "layout/_baseof")
+		}, "layouts/_baseof")
 	}
 
 	// => return only the found contacts as a list

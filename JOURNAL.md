@@ -1,10 +1,28 @@
 
 ## TODO:
 
-- [ ] inside `/src/views/`, write the templates for the implementation 
+## 2024-02-11 19:47
+
+- [x] inside `/src/views/`, write the templates for the implementation 
       of the chapter 3 project; steal the Markup from their project repository.
-- [ ] implement the project as a fiber project. May be tricky because of paths
+- [x] implement the project as a fiber project. May be tricky because of paths
       and templates.
+
+I did it! Templates are working just as they should be. 
+
+__Lessons Learned:__ In a template, defining a block with `{{ define }}` won't
+have the block being rendered automatically. Only `{{ template }}` will do the
+trick. It can even be added right below the definition!
+
+```html
+{{/* only defines it, doesn't show it! }}
+{{ define "my_block" }}
+  <h1>Can you see me?</h1>
+{{ end }}
+
+{{/* THIS one shows it! */}}
+{{ template "my_block" }}
+```
 
 ## 2024-02-11 19:47
 

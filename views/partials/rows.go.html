@@ -1,4 +1,4 @@
-{{ begin "rows" }}
+{{ define "rows" }}
 {{     range . }}
 <tr>
   <td><input type="checkbox" name="selected_contact_ids" value="{{ .ID }}"
