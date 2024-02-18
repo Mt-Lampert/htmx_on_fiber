@@ -21,6 +21,8 @@ func main() {
 	app.Get("/", GetContacts)
 	app.Get("/contacts", GetContacts)
 
+	app.Get("/contacts/new", NewContact)
+
 	app.Listen(":5000")
 }
 
@@ -46,6 +48,16 @@ func GetContacts(c *fiber.Ctx) error {
 	// => return only the found contacts as a list
 	return c.SendString(
 		fmt.Sprintf("We have a search string: '%s'", searchTerm))
+}
+
+func NewContact(c *fiber.Ctx) error {
+
+	return c.Render("pages/contact-form", fiber.Map{
+		"Email": "charlie.cotton@cotton-charlie.com",
+		"First": "Charlie",
+		"Last":  "Cotton",
+		"Phone": "1-58587193-8199",
+	}, "layouts/_baseof")
 }
 
 // vim: foldmethod=indent

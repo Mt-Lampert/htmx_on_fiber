@@ -1,6 +1,20 @@
 
 ## TODO:
 
+- [ ] implement `POST /contacts/new`
+
+<!-- 
+- [ ] implement `GET /contacts/:id`
+- [ ] implement `GET /contacts/:id/update`
+- [ ] implement `PUT /contacts/:id/save`
+- [ ] implement `DELETE /contacts/:id`
+-->
+## 2024-02-18 11:21
+
+- [x] implement `GET /contacts/add`
+
+Yes, I did it. After collecting some experience, this wasn't too tough. 
+
 ## 2024-02-11 19:47
 
 - [x] inside `/src/views/`, write the templates for the implementation 
@@ -15,7 +29,7 @@ have the block being rendered automatically. Only `{{ template }}` will do the
 trick. It can even be added right below the definition!
 
 ```html
-{{/* only defines it, doesn't show it! }}
+{{/* only defines it, doesn't show it! */}}
 {{ define "my_block" }}
   <h1>Can you see me?</h1>
 {{ end }}

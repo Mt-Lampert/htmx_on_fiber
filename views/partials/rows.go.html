@@ -8,20 +8,8 @@
   <td>{{ .Phone }}</td>
   <td>{{ .Email }}</td>
   <td>
-      <div data-overflow-menu>
-          <button type="button" aria-haspopup="menu"
-              aria-controls="contact-menu-{{ .ID }}"
-              >options</button>
-          <div role="menu" hidden id="contact-menu-{{ .ID }}">
-              <a role="menuitem" href="/contacts/{{ .ID }}/edit">edit</a>
-              <a role="menuitem" href="/contacts/{{ .ID }}">view</a>
-              <a role="menuitem" href="#"
-                  hx-delete="/contacts/{{ .ID }}"
-                  hx-confirm="are you sure you want to delete this contact?"
-                  hx-swap="outerhtml swap:1s"
-                  hx-target="closest tr">delete</a>
-          </div>
-      </div>
+    <a href="/contacts/{{ .ID }}/edit">Edit</a>
+    <a href="/contacts/{{ .ID }}">View</a>
   </td>
 </tr>
 
