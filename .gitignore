@@ -27,3 +27,4 @@ go.sum
 static/js/
 static/missing.min.css
 static/img/spinning-circles.svg
+tmp/
