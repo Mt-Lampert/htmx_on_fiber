@@ -4,9 +4,12 @@ import (
 	"context"
 	"fmt"
 
+	"database/sql"
+
 	"github.com/Mt-Lampert/htmx_on_fiber/src/internal/db"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
+	"github.com/usepzaka/fiberflash"
 )
 
 func main() {
@@ -22,6 +25,7 @@ func main() {
 	app.Get("/contacts", GetContacts)
 
 	app.Get("/contacts/new", NewContact)
+	app.Post("/contacts/new", AddContact)
 
 	app.Listen(":5000")
 }
@@ -51,13 +55,50 @@ func GetContacts(c *fiber.Ctx) error {
 }
 
 func NewContact(c *fiber.Ctx) error {
-
 	return c.Render("pages/contact-form", fiber.Map{
 		"Email": "charlie.cotton@cotton-charlie.com",
 		"First": "Charlie",
 		"Last":  "Cotton",
 		"Phone": "1-58587193-8199",
 	}, "layouts/_baseof")
+}
+
+func AddContact(c *fiber.Ctx) error {
+	ctx := context.Background()
+	mp := fiber.Map{
+		"Status": "success",
+		"Msg":    "The new contact has been saved!",
+	}
+	// get the form data
+	dbParams := db.AddContactParams{
+		FirstName: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("first"),
+		},
+		LastName: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("last"),
+		},
+		Email: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("email"),
+		},
+		Phone: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("phone"),
+		},
+	}
+
+	_, err := db.Qs.AddContact(ctx, dbParams)
+	if err != nil {
+		mp = fiber.Map{
+			"Status": "error",
+			"Msg":    "Could not save the new contact!",
+		}
+		return fiberflash.WithError(c, mp).Redirect("/contacts/new")
+	}
+
+	return fiberflash.WithSuccess(c, mp).Redirect("/contacts")
 }
 
 // vim: foldmethod=indent

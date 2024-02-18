@@ -9,9 +9,21 @@
 - [ ] implement `PUT /contacts/:id/save`
 - [ ] implement `DELETE /contacts/:id`
 -->
+## 2024-02-18 23:56
+
+- [x] implement `POST /contacts/new`
+
+To follow the model in the HTMX bible, I had to install the _fiberflash_
+package, understand it and include it into the project.
+
+I finally made it, and I faced a Go-typical surprise when I had to satisfy the
+type requirements for `db.AddContactParams` and `database.sql.NullString`, just
+to insert a few lousy data from the HTML form into the database. It's a pain in
+the ..., yes indeed, but the code will always be workable by being so explicit.
+
 ## 2024-02-18 11:21
 
-- [x] implement `GET /contacts/add`
+- [x] implement `GET /contacts/new`
 
 Yes, I did it. After collecting some experience, this wasn't too tough. 
 
