@@ -9,6 +9,19 @@
 - [ ] implement `PUT /contacts/:id/save`
 - [ ] implement `DELETE /contacts/:id`
 -->
+
+## 2024-02-19 18:12
+
+- [x] implement `POST /contacts/new`, Flash part
+
+The hardest thing was getting my head around the concept (see my Obisidian
+article about it); after that, the implementation was a breeze.
+
+__p.a.:__ Got a warning from Firefox that the current implementation of
+fiberflash won't be tolerated much longer because of a cookie with  Same Site
+issues. Let's see how this works out. At the moment, it just works. :) 
+
+
 ## 2024-02-18 23:56
 
 - [x] implement `POST /contacts/new`
