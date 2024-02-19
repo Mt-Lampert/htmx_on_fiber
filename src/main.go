@@ -40,12 +40,14 @@ func GetContacts(c *fiber.Ctx) error {
 		if err != nil || len(rawContacts) == 0 {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"status":  "Not Found",
-				"message": "Nothing Found"})
+				"message": "Nothing Found",
+			})
 		}
 		contacts := getProperContacts(rawContacts)
 		return c.Render("pages/contacts", fiber.Map{
 			"contacts": contacts,
 			"query":    searchTerm,
+			"Flash":    fiberflash.Get(c),
 		}, "layouts/_baseof")
 	}
 
@@ -56,10 +58,13 @@ func GetContacts(c *fiber.Ctx) error {
 
 func NewContact(c *fiber.Ctx) error {
 	return c.Render("pages/contact-form", fiber.Map{
-		"Email": "charlie.cotton@cotton-charlie.com",
-		"First": "Charlie",
-		"Last":  "Cotton",
-		"Phone": "1-58587193-8199",
+		"Data": fiber.Map {
+			"Email": "charlie.cotton@cotton-charlie.com",
+			"First": "Charlie",
+			"Last":  "Cotton",
+			"Phone": "1-58587193-8199",
+		},
+		"Flash": fiberflash.Get(c)
 	}, "layouts/_baseof")
 }
 

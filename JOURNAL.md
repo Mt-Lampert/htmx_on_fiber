@@ -1,7 +1,7 @@
 
 ## TODO:
 
-- [ ] implement `POST /contacts/new`
+- [ ] implement basic Flash capability inside `/contacts` and `/contacts/new`
 
 <!-- 
 - [ ] implement `GET /contacts/:id`

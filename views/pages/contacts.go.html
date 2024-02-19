@@ -1,5 +1,16 @@
 {{/* {% include 'archive_ui.html' %} */}}
 
+{{ $flashcolor := "red" }}
+
+{{ with .Flash }}
+{{     if eq .Status "success" }}
+{{         $flashcolor = "color:green;" }}
+{{     else }}
+{{         $flashcolor = "color:red;" }}
+{{     end }}
+<p style={{ $flashcolor }}>{{ .Msg }}</p>
+{{ end }}
+
 <form action="/contacts" method="get" class="tool-bar" style="padding-bottom:2rem">
   <label for="search">search term</label>
   <input id="search" type="search" name="q" value="{{ .query }}"

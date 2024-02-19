@@ -22,6 +22,8 @@ go.work
 
 # ignore the go mod sum file
 go.sum
+# ignore the sqlite3 database file
+contacts.db
 
 # ignore static assets
 static/js/

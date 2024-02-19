@@ -4,17 +4,23 @@
 {{ $last := "" }}
 {{ $phone := "" }}
 
-{{ with .Email }}
-{{    $email = . }}
+{{ with .Data }}
+{{     with .Email }}
+{{        $email = . }}
+{{     end }}
+{{     with .First }}
+{{        $first = . }}
+{{     end }}
+{{     with .Last }}
+{{        $last = . }}
+{{     end }}
+{{     with .Phone }}
+{{        $phone = . }}
+{{     end }}
 {{ end }}
-{{ with .First }}
-{{    $first = . }}
-{{ end }}
-{{ with .Last }}
-{{    $last = . }}
-{{ end }}
-{{ with .Phone }}
-{{    $phone = . }}
+
+{{ with .Flash }}
+<p>{{ .Msg }}</p>
 {{ end }}
 
 <form action="/contacts/new" method="post"> 
