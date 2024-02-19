@@ -27,6 +27,8 @@ func main() {
 	app.Get("/contacts/new", NewContact)
 	app.Post("/contacts/new", AddContact)
 
+	app.Get("/contacts/:id", SingleContact)
+
 	app.Listen(":5000")
 }
 
@@ -58,13 +60,13 @@ func GetContacts(c *fiber.Ctx) error {
 
 func NewContact(c *fiber.Ctx) error {
 	return c.Render("pages/contact-form", fiber.Map{
-		"Data": fiber.Map {
+		"Data": fiber.Map{
 			"Email": "charlie.cotton@cotton-charlie.com",
 			"First": "Charlie",
 			"Last":  "Cotton",
 			"Phone": "1-58587193-8199",
 		},
-		"Flash": fiberflash.Get(c)
+		"Flash": fiberflash.Get(c),
 	}, "layouts/_baseof")
 }
 
@@ -104,6 +106,30 @@ func AddContact(c *fiber.Ctx) error {
 	}
 
 	return fiberflash.WithSuccess(c, mp).Redirect("/contacts")
+}
+
+func SingleContact(c *fiber.Ctx) error {
+	ctx := context.Background()
+	id, _ := c.ParamsInt("id")
+	scArg := sql.NullInt64{
+		Valid: true,
+		Int64: int64(id),
+	}
+
+	rawContact, err := db.Qs.GetContact(ctx, scArg)
+	if err != nil {
+		mp := fiber.Map{
+			"Status": "error",
+			"Msg":    fmt.Sprintf("Eh!!? Could not find a contact with id '%d'", id),
+		}
+		fiberflash.WithError(c, mp).Redirect("/contacts")
+	}
+
+	return c.Render(
+		"pages/single-contact",
+		getProperContact(rawContact),
+		"layouts/_baseof",
+	)
 }
 
 // vim: foldmethod=indent

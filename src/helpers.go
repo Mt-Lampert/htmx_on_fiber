@@ -42,4 +42,26 @@ func getProperContacts(rContacts []db.Contact) []ProperContact {
 	return pContacts
 }
 
+// converts a single raw contact from SQLc into a workable contact
+func getProperContact(rc db.Contact) ProperContact {
+	var pc ProperContact
+	if rc.ID.Valid {
+		pc.ID = strconv.FormatInt(rc.ID.Int64, 10)
+	}
+	if rc.LastName.Valid {
+		pc.Last = rc.LastName.String
+	}
+	if rc.FirstName.Valid {
+		pc.First = rc.FirstName.String
+	}
+	if rc.Phone.Valid {
+		pc.Phone = rc.Phone.String
+	}
+	if rc.Email.Valid {
+		pc.Email = rc.Email.String
+	}
+
+	return pc
+}
+
 // vim: foldmethod=indent
