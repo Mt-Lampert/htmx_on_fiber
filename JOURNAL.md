@@ -10,6 +10,13 @@
 - [ ] implement `DELETE /contacts/:id`
 -->
 
+## 2024-02-19 22:04
+
+- [x] implement `GET /contacts/:id/edit`
+
+Easy as pie. Just hat to copy and adapt the database code from `SingleView()`
+and send the result to `views/pages/contact-form.go.html`.
+
 ## 2024-02-19 18:12
 
 - [x] implement `GET /contacts/:id`

@@ -29,6 +29,8 @@ func main() {
 
 	app.Get("/contacts/:id", SingleContact)
 
+	app.Get("/contacts/:id/edit", EditContact)
+
 	app.Listen(":5000")
 }
 
@@ -130,6 +132,29 @@ func SingleContact(c *fiber.Ctx) error {
 		getProperContact(rawContact),
 		"layouts/_baseof",
 	)
+}
+
+func EditContact(c *fiber.Ctx) error {
+	ctx := context.Background()
+	id, _ := c.ParamsInt("id")
+	scArg := sql.NullInt64{
+		Valid: true,
+		Int64: int64(id),
+	}
+
+	rawContact, err := db.Qs.GetContact(ctx, scArg)
+	if err != nil {
+		mp := fiber.Map{
+			"Status": "error",
+			"Msg":    fmt.Sprintf("Eh!!? Could not find a contact with id '%d' for editing", id),
+		}
+		fiberflash.WithError(c, mp).Redirect("/contacts")
+	}
+
+	return c.Render("pages/contact-form", fiber.Map{
+		"Data":  getProperContact(rawContact),
+		"Flash": fiber.Map{},
+	}, "layouts/_baseof")
 }
 
 // vim: foldmethod=indent
