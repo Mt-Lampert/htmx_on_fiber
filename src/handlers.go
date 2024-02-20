@@ -44,7 +44,8 @@ func NewContact(c *fiber.Ctx) error {
 			"Last":  "Cotton",
 			"Phone": "1-58587193-8199",
 		},
-		"Flash": fiberflash.Get(c),
+		"Action": "/contacts/new",
+		"Flash":  fiberflash.Get(c),
 	}, "layouts/_baseof")
 }
 
@@ -105,7 +106,11 @@ func SingleContact(c *fiber.Ctx) error {
 
 	return c.Render(
 		"pages/single-contact",
-		getProperContact(rawContact),
+		fiber.Map{
+			"Data":  getProperContact(rawContact),
+			"Flash": fiberflash.Get(c),
+		},
+
 		"layouts/_baseof",
 	)
 }
@@ -128,9 +133,52 @@ func EditContact(c *fiber.Ctx) error {
 	}
 
 	return c.Render("pages/contact-form", fiber.Map{
-		"Data":  getProperContact(rawContact),
-		"Flash": fiber.Map{},
+		"Data":   getProperContact(rawContact),
+		"Action": fmt.Sprintf("/contacts/%s/edit", c.Params("id")),
+		"Flash":  fiber.Map{},
 	}, "layouts/_baseof")
+}
+
+func UpdateContact(c *fiber.Ctx) error {
+	ctx := context.Background()
+	id, _ := c.ParamsInt("id")
+
+	// form data -> dbQueryParams
+	dbParams := db.UpdateContactParams{
+		FirstName: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("first"),
+		},
+		LastName: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("last"),
+		},
+		Email: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("email"),
+		},
+		Phone: sql.NullString{
+			Valid:  true,
+			String: c.FormValue("phone"),
+		},
+		ID: sql.NullInt64{
+			Valid: true,
+			Int64: int64(id),
+		},
+	}
+
+	_, err := db.Qs.UpdateContact(ctx, dbParams)
+	if err != nil {
+		return fiberflash.WithError(c, fiber.Map{
+			"Status": "error",
+			"Msg":    fmt.Sprintf("Could not update Contact with ID '%s'", c.Params("id")),
+		}).Redirect(fmt.Sprintf("/contacts/%s/edit", c.Params("id")))
+	}
+
+	return fiberflash.WithSuccess(c, fiber.Map{
+		"Status": "success",
+		"Msg":    fmt.Sprintf("Contact '%s' successfully updated!", c.Params("id")),
+	}).Redirect(fmt.Sprintf("/contacts/%s", c.Params("id")))
 }
 
 // vim: foldmethod=indent

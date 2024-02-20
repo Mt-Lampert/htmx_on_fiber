@@ -23,7 +23,7 @@
 <p>{{ .Msg }}</p>
 {{ end }}
 
-<form action="/contacts/new" method="post"> 
+<form action="{{ .Action }}" method="post"> 
     <fieldset>
         <legend>Contact Values</legend>
         <p>

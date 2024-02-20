@@ -1,12 +1,16 @@
-<h1>{{ .First }} {{ .Last }}</h1>
+{{ with .Flash }}
+<p>{{ .Msg }}</p>
+{{ end }}
+
+<h1>{{ .Data.First }} {{ .Data.Last }}</h1>
 
 <div>
-  <div>Phone: {{ .Phone }}</div>
-  <div>Email: {{ .Email }}</div>
+  <div>Phone: {{ .Data.Phone }}</div>
+  <div>Email: {{ .Data.Email }}</div>
 </div>
 
 <p>
-  <a href="/contacts/{{ .ID }}/edit">Edit</a>
+  <a href="/contacts/{{ .Data.ID }}/edit">Edit</a>
   <a href="/contacts">Back</a>
 </p>
 

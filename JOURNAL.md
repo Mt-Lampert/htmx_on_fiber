@@ -1,20 +1,33 @@
 
 ## TODO:
 
-- [ ] implement basic Flash capability inside `/contacts` and `/contacts/new`
-
-<!-- 
-- [ ] implement `GET /contacts/:id`
-- [ ] implement `GET /contacts/:id/update`
-- [ ] implement `PUT /contacts/:id/save`
+- [ ] Read the final part of the HTMX Bible chapter
+- [ ] Add more well-formed TODOs
+- [ ] implement `POST /contacts/:id/edit`
 - [ ] implement `DELETE /contacts/:id`
--->
+
+## 2024-02-20 10:42
+
+- [x] implement `POST /contacts/:id/edit`
+
+Quite straightforward. Had to consult the `db.Qs.UpdateContact()` code to do it
+right, and finally it worked out.
+
+However, reusing `views/pages/contact-form.go.html` had a nasty surprise in
+store: Instead of updating the contact, it added another one using the data I
+gave it. 
+
+The problem was a hard-coded `/contacts/new` as the form action – the form
+always ended up adding a new contact in the database. After adding the
+`"Action"` prop to the `NewContact()/UpdateContact()` handlers, things are
+working well.
+
 
 ## 2024-02-19 22:04
 
 - [x] implement `GET /contacts/:id/edit`
 
-Easy as pie. Just hat to copy and adapt the database code from `SingleView()`
+Easy as pie. Just had to copy and adapt the database code from `SingleView()`
 and send the result to `views/pages/contact-form.go.html`.
 
 ## 2024-02-19 18:12
