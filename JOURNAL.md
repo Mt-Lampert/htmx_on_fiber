@@ -1,10 +1,20 @@
 
 ## TODO:
 
-- [ ] Read the final part of the HTMX Bible chapter
-- [ ] Add more well-formed TODOs
-- [ ] implement `POST /contacts/:id/edit`
-- [ ] implement `DELETE /contacts/:id`
+Nothing special. We just finished the web-1.0 version of this project
+
+
+## 2024-02-20 12:11
+
+- [x] implement `DELETE /contacts/:id`
+
+The easiest implementation of all, if it hadn't been for an error in
+`src/internal/queries.sql`. This error prevented the scaffolding of the
+`DeleteContact()` method; after correcting and running `$ sqlc generate` again,
+everything turned out fine.
+
+This also showed to me that my selfed-baked `init.go` file went totally
+untouched by _SQLc_. “Most satisfactory!”, as Mr Wolfe used to say.
 
 ## 2024-02-20 10:42
 
@@ -25,6 +35,8 @@ working well.
 
 ## 2024-02-19 22:04
 
+- [x] Read the final part of the HTMX Bible chapter
+- [x] Add more well-formed TODOs
 - [x] implement `GET /contacts/:id/edit`
 
 Easy as pie. Just had to copy and adapt the database code from `SingleView()`

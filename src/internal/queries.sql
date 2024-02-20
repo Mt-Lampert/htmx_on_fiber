@@ -30,6 +30,6 @@ SET first_name=?, last_name=?, phone=?, email=?
 WHERE id=? 
 RETURNING * ;
 
--- name DeleteContact 
+-- name: DeleteContact :exec
 DELETE FROM contacts WHERE id=? ;
 

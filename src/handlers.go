@@ -181,4 +181,27 @@ func UpdateContact(c *fiber.Ctx) error {
 	}).Redirect(fmt.Sprintf("/contacts/%s", c.Params("id")))
 }
 
+func DeleteContact(c *fiber.Ctx) error {
+	ctx := context.Background()
+	id, _ := c.ParamsInt("id")
+	scArg := sql.NullInt64{
+		Valid: true,
+		Int64: int64(id),
+	}
+
+	err := db.Qs.DeleteContact(ctx, scArg)
+
+	if err != nil {
+		return fiberflash.WithError(c, fiber.Map{
+			"Status": "error",
+			"Msg":    fmt.Sprintf("Could not delete Contact '%s' from database!", c.Params("id")),
+		}).Redirect(fmt.Sprintf("/contact/%s", c.Params("id")))
+	}
+
+	return fiberflash.WithSuccess(c, fiber.Map{
+		"Status": "success",
+		"Msg":    fmt.Sprintf("Successfully deleted Contact '%s' from database.", c.Params("id")),
+	}).Redirect("/contacts")
+}
+
 // vim: foldmethod=indent

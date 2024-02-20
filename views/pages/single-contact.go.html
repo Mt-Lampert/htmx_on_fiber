@@ -9,9 +9,17 @@
   <div>Email: {{ .Data.Email }}</div>
 </div>
 
+<form action="/contacts/{{ .Data.ID }}/delete" method="post">
+  <p>
+    <button>Delete this contact</button>
+  </p>
+</form>
+
 <p>
   <a href="/contacts/{{ .Data.ID }}/edit">Edit</a>
   <a href="/contacts">Back</a>
 </p>
+
+
 
 

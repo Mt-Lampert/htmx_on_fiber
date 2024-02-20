@@ -44,6 +44,17 @@ func (q *Queries) AddContact(ctx context.Context, arg AddContactParams) (Contact
 	return i, err
 }
 
+const deleteContact = `-- name: DeleteContact :exec
+;
+
+DELETE FROM contacts WHERE id=?
+`
+
+func (q *Queries) DeleteContact(ctx context.Context, id sql.NullInt64) error {
+	_, err := q.db.ExecContext(ctx, deleteContact, id)
+	return err
+}
+
 const getAllContacts = `-- name: GetAllContacts :many
 SELECT id, last_name, first_name, phone, email
 FROM contacts 
@@ -186,3 +197,5 @@ func (q *Queries) UpdateContact(ctx context.Context, arg UpdateContactParams) (C
 	)
 	return i, err
 }
+
+// vim: foldmethod=indent
