@@ -142,6 +142,7 @@ func EditContact(c *fiber.Ctx) error {
 func UpdateContact(c *fiber.Ctx) error {
 	ctx := context.Background()
 	id, _ := c.ParamsInt("id")
+	fmt.Printf("    formValue['first']: '%s'\n", c.FormValue("first"))
 
 	// form data -> dbQueryParams
 	dbParams := db.UpdateContactParams{

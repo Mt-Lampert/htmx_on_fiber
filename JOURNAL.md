@@ -1,7 +1,32 @@
 
 ## TODO:
 
-Nothing special. We just finished the web-1.0 version of this project
+
+
+## 2024-02-23 05:36
+
+- [x] Logger installieren
+- [x] Logger mit neuem Endpoint ausprobieren; rumspielen, experimentieren.
+
+Hab ihn installiert; er loggt jetzt alles. Und ich hab was herausgefunden:
+`fmt.Printf()` lässt sich für alles spezielle Logging ausnutzen.
+
+Die Arbeit mit HTMX ist ... „anders“. Mein größtes Problem ist es, in variablen
+Frames zu denken. Beispiel: Ich mach eine Abfrage. Diese Abfrage hat ein
+Ergebnis (⇒ snippet) und soll auch eine _Flash-Message_ absondern.
+
+Mit HTMX müsste der Container für die Flash-Message in das Snippet eingebaut werden.
+Im CSS wäre dann definiert, dass die Message dann `fixed` ist und z.B. oben
+rechts aufleuchtet und nach ein paar Sekunden wieder verschwindet. Das kann man
+ja alles so einstellen. Aber funktioniert es auch dann, wenn HTMX das Snippet
+hineinlädt? Die Doku sagt Ja. wir müssen das einfach ausprobieren. Deshalb
+folgender Plan:
+
+1. CSS-Klassen für Flash-Nachrichten einbauen
+0. `DELETE /contacts/:id` zu einem HX-Element umbauen.
+0. `hx-swap='#contact-table'`
+0. im Snippet den flash einbauen, mit CSS für Positionierung und Transitions
+0. beten, dass alles richtig funktioniert.
 
 
 ## 2024-02-20 12:11
