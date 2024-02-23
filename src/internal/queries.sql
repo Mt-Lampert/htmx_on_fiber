@@ -33,3 +33,6 @@ RETURNING * ;
 -- name: DeleteContact :exec
 DELETE FROM contacts WHERE id=? ;
 
+-- name: GetEmail :one
+SELECT id FROM contacts WHERE email=? ;
+

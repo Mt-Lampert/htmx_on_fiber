@@ -38,12 +38,8 @@ func GetContacts(c *fiber.Ctx) error {
 
 func NewContact(c *fiber.Ctx) error {
 	return c.Render("pages/contact-form", fiber.Map{
-		"Data": fiber.Map{
-			"Email": "charlie.cotton@cotton-charlie.com",
-			"First": "Charlie",
-			"Last":  "Cotton",
-			"Phone": "1-58587193-8199",
-		},
+		"Data":   fiber.Map{},
+		"Errors": fiber.Map{},
 		"Action": "/contacts/new",
 		"Flash":  fiberflash.Get(c),
 	}, "layouts/_baseof")
@@ -135,6 +131,7 @@ func EditContact(c *fiber.Ctx) error {
 	return c.Render("pages/contact-form", fiber.Map{
 		"Data":   getProperContact(rawContact),
 		"Action": fmt.Sprintf("/contacts/%s/edit", c.Params("id")),
+		"Error":  fiber.Map{},
 		"Flash":  fiber.Map{},
 	}, "layouts/_baseof")
 }
@@ -203,6 +200,26 @@ func DeleteContact(c *fiber.Ctx) error {
 		"Status": "success",
 		"Msg":    fmt.Sprintf("Successfully deleted Contact '%s' from database.", c.Params("id")),
 	}).Redirect("/contacts", fiber.StatusSeeOther)
+}
+
+func CheckEmail(c *fiber.Ctx) error {
+	ctx := context.Background()
+	theMail := c.Query("email")
+
+	rawID, err := db.Qs.GetEmail(ctx, sql.NullString{
+		Valid:  true,
+		String: theMail,
+	})
+
+	if err != nil {
+		return c.SendString("<span></span>")
+	}
+
+	if rawID.Valid {
+		return c.SendString("<span class='error'>Please choose another email!</span>")
+	}
+
+	return c.SendString("<span></span>")
 }
 
 // vim: foldmethod=indent

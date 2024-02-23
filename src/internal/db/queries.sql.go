@@ -109,6 +109,19 @@ func (q *Queries) GetContact(ctx context.Context, id sql.NullInt64) (Contact, er
 	return i, err
 }
 
+const getEmail = `-- name: GetEmail :one
+;
+
+SELECT id FROM contacts WHERE email=?
+`
+
+func (q *Queries) GetEmail(ctx context.Context, email sql.NullString) (sql.NullInt64, error) {
+	row := q.db.QueryRowContext(ctx, getEmail, email)
+	var id sql.NullInt64
+	err := row.Scan(&id)
+	return id, err
+}
+
 const searchContacts = `-- name: SearchContacts :many
 ;
 

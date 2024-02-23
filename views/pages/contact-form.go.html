@@ -28,8 +28,12 @@
         <legend>Contact Values</legend>
         <p>
             <label for="email">Email</label> 
-            <input name="email" id="email" type="email" placeholder="Email" value="{{ $email  }}">
-            {{/* <span class="error">{{ contact.errors['email'] }}</span> (4) */}}
+            <input name="email" id="email" type="email" placeholder="Email" value="{{ $email  }}"
+              hx-get="/contacts/mailcheck"
+              hx-target="next .error"
+              hx-swap="outerHTML"
+            >
+            <span class="error">{{ .Errors.email }}</span>
         </p>
         <p>
             <label for="first">First Name</label>

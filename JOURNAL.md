@@ -1,9 +1,97 @@
 
 ## TODO:
 
+
+## 2024-02-23 19:21
+
+- [x] Validation for unique mail.
+    - [x] supplement `db` with specific mail search for user
+    - [x] add HTMX to execute the request supplemented above
+
+Yes, we made it! and we made it better than the original, and `sql.NullInt` made it even easier!
+
+First, here's what we changed in the form:
+
+
+```html
+<p>
+    <label for="email">Email</label> 
+    <input name="email" id="email" type="email" placeholder="Email" value="{{ $email  }}"
+      hx-get="/contacts/mailcheck"
+      hx-target="next .error"
+      hx-swap="outerHTML"
+    >
+    <span class="error">{{ .Errors.email }}</span>
+</p>
+```
+
+#### Annotations:
+
+It's essential to notice here that the HTMX is happening inside an `<input>`
+element. This has consequences for the `hx-get` property:
+
+1. As soon as the focus leaves this `<input>` element,  `hx-get` will send a
+   'GET' request to `/contacts/mailcheck?{{ this.name }}={{ this.value }}` like 
+   `/contacts/mailcheck?email=kim.kinky@weirdoclub.org`, for example.
+   Why? Because of the default settings inside HTMX: If an `<input>` element
+   sends `hx-get`, this will be what happens by default! Cool, eh?
+2. `hx-target` will be the `next` DOM element with an 'error' class.
+3. `hx-swap` will totally replace `hx-target` with the HTML response it
+   receives from the backend.
+
+That's it from the HTMX side. Now let's have a look at the handler:
+
+```go
+// file: /src/handlers.go
+func CheckEmail(c *fiber.Ctx) error {
+	ctx := context.Background()
+	theMail := c.Query("email")  // -- 1 -- 
+	rawID, err := db.Qs.GetEmail(ctx, sql.NullString{
+		Valid:  true,
+		String: theMail,
+	}) // --2--
+
+	if err != nil { // --3-- 
+		return c.SendString("<span></span>")
+	}
+
+	if rawID.Valid {  // --4--
+		return c.SendString("<span class='error'>Please choose another email!</span>")
+	}
+
+	return c.SendString("<span></span>") // --5--
+}
+
+// file: /src/internal/db/queries.sql.go
+func (q *Queries) GetEmail(ctx context.Context, email sql.NullString) (sql.NullInt64, error) { ... }
+```
+
+First, I had to add a new entry in `/src/internal/queries.sql` to generate
+`db.GetEmail()`. _SQLc_ then came up with the function shown here:
+
+#### Annotations
+
+The code gets the email from the query params (1), makes the database request
+(2) by creating a valid `sql.NullString` argument and receives a result. 
+
+Now the logic is important: If the database query was successful, this will be
+taken for an __error!__ (4) Why? Because mail addresses must be unique in the
+database. Everything else will be taken to be OK. (3,5)
+
+__IMPORTANT:__ HTMX depends on the response to be valid HTML. That's why we
+send an empty `<span>` element back and not an empty string. If this rule is
+violated, HTMX will react drastically: it will take the entire landing page for
+the response and, in this case, replace the `next .error` element with it
+(`hx-target`)! 
+
+So, if we suddenly find the landing page included in our current page, that's
+the way HTMX tells us that we made an HTMX error ...
+
+
+
 ## 2024-02-23 15:51
 
-- [ ] “hexify” the `delete` button in `single-contact.go.html`
+- [x] “hexify” the `delete` button in `single-contact.go.html`
 
 ```html
 <p>
@@ -40,12 +128,13 @@ make a `GET` request when performing the redirection. Without it, the browser
 would have continued with the latest HTTP method it was processed, with
 happened to be `DELETE`.
 
+The result:
 
-
-> We have a button that, all by itself, is able to issue a properly formatted
-> HTTP DELETE request to the correct URL, and the UI and location bar are all
-> updated correctly. This was accomplished with three declarative attributes
-> placed directly on the button: hx-delete, hx-target and hx-push-url.
+> We [now] have a button that, all by itself, is able to issue a properly
+> formatted HTTP DELETE request to the correct URL, and the UI and location bar
+> are all updated correctly. This was accomplished with three declarative
+> attributes placed directly on the button: hx-delete, hx-target and
+> hx-push-url.
 
 ## 2024-02-23 05:36
 
