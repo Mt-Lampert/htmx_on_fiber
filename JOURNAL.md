@@ -8,25 +8,31 @@
 - [x] Logger installieren
 - [x] Logger mit neuem Endpoint ausprobieren; rumspielen, experimentieren.
 
+Installed it. Logs everything now. And I found something out. `fmt.Printf()`
+can be used for any special logging.
 Hab ihn installiert; er loggt jetzt alles. Und ich hab was herausgefunden:
-`fmt.Printf()` lässt sich für alles spezielle Logging ausnutzen.
 
-Die Arbeit mit HTMX ist ... „anders“. Mein größtes Problem ist es, in variablen
-Frames zu denken. Beispiel: Ich mach eine Abfrage. Diese Abfrage hat ein
-Ergebnis (⇒ snippet) und soll auch eine _Flash-Message_ absondern.
+Working with HTMX will be less tedious, but it will be „different“. My biggest
+problem will be thinking in variable frames. To give an example: I make a request. 
+This request will result in a snippet for HTMX and shall even fire up a
+flash/toast message.
 
-Mit HTMX müsste der Container für die Flash-Message in das Snippet eingebaut werden.
-Im CSS wäre dann definiert, dass die Message dann `fixed` ist und z.B. oben
-rechts aufleuchtet und nach ein paar Sekunden wieder verschwindet. Das kann man
-ja alles so einstellen. Aber funktioniert es auch dann, wenn HTMX das Snippet
-hineinlädt? Die Doku sagt Ja. wir müssen das einfach ausprobieren. Deshalb
-folgender Plan:
+Using HTMX, the flash container must be included into the snippet. CSS would define
+it to be `fixed` and flashing up on the top right and vanishing again after a couple of seconds.
+Yes, I can write that CSS. But will it still work when HTMX loads and
+integrates the snippet? The docs say, “No problem!”. We simply have to
+experiment. Therefore I made the following plan:
 
-1. CSS-Klassen für Flash-Nachrichten einbauen
-0. `DELETE /contacts/:id` zu einem HX-Element umbauen.
+1. define CSS classes forl flash messages, with positioning and transitions
+0. CSS-Klassen für Flash-Nachrichten einbauen
+0. convert `DELETE /contacts/:id` to HTMX technology
 0. `hx-swap='#contact-table'`
-0. im Snippet den flash einbauen, mit CSS für Positionierung und Transitions
-0. beten, dass alles richtig funktioniert.
+0. pray everythign works out well.
+
+__[ UPDATE 12:23:]__ Im the [GitHub repository for 
+Animate.css](https://github.com/animate-css/animate.css/tree/main/source)
+we can steal good transitions and animations with impunity without installing
+[Animate.css](https://animate.style/) itself.:w
 
 
 ## 2024-02-20 12:11
