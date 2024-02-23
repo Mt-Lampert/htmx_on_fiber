@@ -1,7 +1,51 @@
 
 ## TODO:
 
+## 2024-02-23 15:51
 
+- [ ] “hexify” the `delete` button in `single-contact.go.html`
+
+```html
+<p>
+  <button 
+    hx-delete="/contacts/{{ .Data.ID }}" 
+    hx-target="body"
+    hx-push-url="true"
+    >Delete this contact</button>
+</p>
+```
+
+#### Annotations
+
+1. `hx-delete` sends a `DELETE` request to `/contacts/5` (in our case)
+2. Without the `hx-target`, the response would have replaced the `<button>`
+   element that triggert the request. With `hx-target`, the right DOM element
+   will be replaced
+3. `hx-push-url` will see to execute the redirection even in the location bar
+   will be complete and show the right URL.
+
+But we had to update the handler for `DELETE /contacts/:id`, too:
+
+```go
+// ...
+return fiberflash.WithSuccess(c, fiber.Map{
+	"Status": "success",
+	"Msg":    fmt.Sprintf("Successfully deleted Contact '%s' from database.", c.Params("id")),
+}).Redirect("/contacts", fiber.StatusSeeOther)
+// ...
+```
+
+The `fiber.StatusSeeOther` supplement was necessary to force the browser to
+make a `GET` request when performing the redirection. Without it, the browser
+would have continued with the latest HTTP method it was processed, with
+happened to be `DELETE`.
+
+
+
+> We have a button that, all by itself, is able to issue a properly formatted
+> HTTP DELETE request to the correct URL, and the UI and location bar are all
+> updated correctly. This was accomplished with three declarative attributes
+> placed directly on the button: hx-delete, hx-target and hx-push-url.
 
 ## 2024-02-23 05:36
 

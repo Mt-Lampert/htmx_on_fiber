@@ -196,13 +196,13 @@ func DeleteContact(c *fiber.Ctx) error {
 		return fiberflash.WithError(c, fiber.Map{
 			"Status": "error",
 			"Msg":    fmt.Sprintf("Could not delete Contact '%s' from database!", c.Params("id")),
-		}).Redirect(fmt.Sprintf("/contact/%s", c.Params("id")))
+		}).Redirect(fmt.Sprintf("/contact/%s", c.Params("id")), fiber.StatusSeeOther)
 	}
 
 	return fiberflash.WithSuccess(c, fiber.Map{
 		"Status": "success",
 		"Msg":    fmt.Sprintf("Successfully deleted Contact '%s' from database.", c.Params("id")),
-	}).Redirect("/contacts")
+	}).Redirect("/contacts", fiber.StatusSeeOther)
 }
 
 // vim: foldmethod=indent

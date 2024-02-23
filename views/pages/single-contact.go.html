@@ -9,11 +9,13 @@
   <div>Email: {{ .Data.Email }}</div>
 </div>
 
-<form action="/contacts/{{ .Data.ID }}/delete" method="post">
-  <p>
-    <button>Delete this contact</button>
-  </p>
-</form>
+<p>
+  <button 
+    hx-delete="/contacts/{{ .Data.ID }}" 
+    hx-target="body"
+    hx-push-url="true"
+    >Delete this contact</button>
+</p>
 
 <p>
   <a href="/contacts/{{ .Data.ID }}/edit">Edit</a>

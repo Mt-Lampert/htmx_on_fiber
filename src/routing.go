@@ -14,5 +14,6 @@ func build_routing(app *fiber.App) {
 	app.Get("/contacts/:id/edit", EditContact)
 	app.Post("contacts/:id/edit", UpdateContact)
 
-	app.Post("contacts/:id/delete", DeleteContact)
+	// app.Post("contacts/:id/delete", DeleteContact)
+	app.Delete("/contacts/:id", DeleteContact)
 }
