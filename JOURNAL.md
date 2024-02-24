@@ -85,7 +85,7 @@ the response and, in this case, replace the `next .error` element with it
 (`hx-target`)! 
 
 So, if we suddenly find the landing page included in our current page, that's
-the way HTMX tells us that we made an HTMX error ...
+the way HTMX tells us we made an HTML error ...
 
 
 
