@@ -17,7 +17,6 @@ The idea is a paging feature:
    focus will be laid to the bottom of the table again.
 0. If all contacts are being shown on the page, the `More` button is being replaced
    by a `Less` button.
-0. 
 
 
 
@@ -42,8 +41,18 @@ The idea is a paging feature:
 
 ### YAGNI Ideas
 
-YAGNI stands for “You ain’t gonna need it!”
+YAGNI stands for “You ain’t gonna need it!” (for the moment).
 
 - [Fiber sessions](https://docs.gofiber.io/api/middleware/session): Only for
   more than one user.
+- Setting the focus for the new elements in a loong, long list. Will only be
+  needed in case the defaults in the browser and in HTMX fail our objectives.
+
+
+### Sources to exploit
+
+1. [Setting the focus](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/focus)
+    - needed for automatic scrolling to the right element in a long, long list
+0. [Finding the last element in a Template range](https://go.dev/play/p/JFkGmjq8mY)
+    - ⇒ ... which shall be the element we want to lay the focus on.
 
