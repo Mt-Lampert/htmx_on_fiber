@@ -55,14 +55,34 @@ func (q *Queries) DeleteContact(ctx context.Context, id sql.NullInt64) error {
 	return err
 }
 
-const getAllContacts = `-- name: GetAllContacts :many
+const getContact = `-- name: GetContact :one
+SELECT id, last_name, first_name, phone, email
+FROM contacts
+WHERE id=?
+`
+
+func (q *Queries) GetContact(ctx context.Context, id sql.NullInt64) (Contact, error) {
+	row := q.db.QueryRowContext(ctx, getContact, id)
+	var i Contact
+	err := row.Scan(
+		&i.ID,
+		&i.LastName,
+		&i.FirstName,
+		&i.Phone,
+		&i.Email,
+	)
+	return i, err
+}
+
+const getContacts = `-- name: GetContacts :many
 SELECT id, last_name, first_name, phone, email
 FROM contacts 
 ORDER BY last_name, first_name
+LIMIT ?
 `
 
-func (q *Queries) GetAllContacts(ctx context.Context) ([]Contact, error) {
-	rows, err := q.db.QueryContext(ctx, getAllContacts)
+func (q *Queries) GetContacts(ctx context.Context, limit int64) ([]Contact, error) {
+	rows, err := q.db.QueryContext(ctx, getContacts, limit)
 	if err != nil {
 		return nil, err
 	}
@@ -88,25 +108,6 @@ func (q *Queries) GetAllContacts(ctx context.Context) ([]Contact, error) {
 		return nil, err
 	}
 	return items, nil
-}
-
-const getContact = `-- name: GetContact :one
-SELECT id, last_name, first_name, phone, email
-FROM contacts
-WHERE id=?
-`
-
-func (q *Queries) GetContact(ctx context.Context, id sql.NullInt64) (Contact, error) {
-	row := q.db.QueryRowContext(ctx, getContact, id)
-	var i Contact
-	err := row.Scan(
-		&i.ID,
-		&i.LastName,
-		&i.FirstName,
-		&i.Phone,
-		&i.Email,
-	)
-	return i, err
 }
 
 const getEmail = `-- name: GetEmail :one

@@ -1,0 +1,16 @@
+<table id="theContacts">
+  <thead>
+  <tr>
+      <th></th>
+      <th>first</th>
+      <th>last</th>
+      <th>phone</th>
+      <th>email</th>
+      <th></th>
+  </tr>
+  </thead>
+  <tbody>
+{{         template "rows" .contacts }}
+  {{/* {% include 'rows.html' %} */}}
+  </tbody>
+</table>

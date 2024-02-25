@@ -1,8 +1,9 @@
 
--- name: GetAllContacts :many
+-- name: GetContacts :many
 SELECT *
 FROM contacts 
-ORDER BY last_name, first_name;
+ORDER BY last_name, first_name
+LIMIT ?;
 
 -- name: GetContact :one
 SELECT *

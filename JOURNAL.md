@@ -1,15 +1,23 @@
 
 ## TODO:
 
-- [ ] implement the Dropdown paging project (see
+Nothing left at the moment
+
+
+## 2024-02-23 19:21
+
+- [x] implement the Dropdown paging project (see
   [here](../ideas/pages_by_session.md) for details
-  - [ ] add more contacts to the database until it carries 22 contacts
-  - [ ] update `GetAllContacts` in `src/internal/queries.sql` according to the
+  - [x] add more contacts to the database until it carries 22 contacts
+  - [x] update `GetAllContacts` in `src/internal/queries.sql` according to the
     feature plans
-  - [ ] set a global variables `gSETS` and `gSET_SIZE` in `src/handlers.go`
-  - [ ] refactor the existing code in the `GetContacts()` to make sure it initially shows the first 10 contacts
-  - [ ] add the `More` button with HTMX to expand the list by 5 more contacts.
-  - [ ] deactivate the `More` button when it's clear that all in the list are being shown.
+  - [x] set a global variables `gSETS` and `gSET_SIZE` in `src/handlers.go`
+  - [x] refactor the existing code in the `GetContacts()` to make sure it initially shows the first 10 contacts
+  - [x] Add a 'More' button to add 5 contacts to the list and update the list accordingly
+  - [x] Add a 'Reset' button to reset the display to 10 contacts
+
+It went like a charm! The only thing I missed the first time was creating a
+template snippet for the `More`/`Reset` button.
 
 
 

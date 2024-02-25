@@ -10,13 +10,17 @@ import (
 	"github.com/usepzaka/fiberflash"
 )
 
+var gSETS int64 = 2
+var gSETSIZE int64 = 5
+
 func GetContacts(c *fiber.Ctx) error {
 	ctx := context.Background()
 	searchTerm := c.Query("q")
+	limit := gSETS * gSETSIZE
 
 	if searchTerm == "" {
 		// => return all contacts as a list
-		rawContacts, err := db.Qs.GetAllContacts(ctx)
+		rawContacts, err := db.Qs.GetContacts(ctx, limit)
 		if err != nil || len(rawContacts) == 0 {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
 				"status":  "Not Found",
@@ -220,6 +224,48 @@ func CheckEmail(c *fiber.Ctx) error {
 	}
 
 	return c.SendString("<span></span>")
+}
+
+func MoreContacts(c *fiber.Ctx) error {
+	ctx := context.Background()
+	gSETS = gSETS + 1
+	limit := gSETS * gSETSIZE
+
+	// => return all contacts as a list
+	rawContacts, err := db.Qs.GetContacts(ctx, limit)
+	if err != nil || len(rawContacts) == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  "Not Found",
+			"message": "Nothing Found",
+		})
+	}
+	contacts := getProperContacts(rawContacts)
+	return c.Render("snippets/the_contacts", fiber.Map{
+		"contacts": contacts,
+		"query":    "",
+		"Flash":    fiberflash.Get(c),
+	})
+}
+
+func ResetContacts(c *fiber.Ctx) error {
+	ctx := context.Background()
+	gSETS = 2
+	limit := gSETS * gSETSIZE
+
+	// => return {limit} contacts as a list
+	rawContacts, err := db.Qs.GetContacts(ctx, limit)
+	if err != nil || len(rawContacts) == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"status":  "Not Found",
+			"message": "Nothing Found",
+		})
+	}
+	contacts := getProperContacts(rawContacts)
+	return c.Render("snippets/the_contacts", fiber.Map{
+		"contacts": contacts,
+		"query":    "",
+		"Flash":    fiberflash.Get(c),
+	})
 }
 
 // vim: foldmethod=indent

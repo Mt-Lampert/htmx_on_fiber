@@ -7,6 +7,9 @@ func build_routing(app *fiber.App) {
 	app.Get("/contacts", GetContacts)
 	app.Get("/contacts/mailcheck", CheckEmail)
 
+	app.Get("/contacts/more", MoreContacts)
+	app.Get("/contacts/reset", ResetContacts)
+
 	app.Get("/contacts/new", NewContact)
 	app.Post("/contacts/new", AddContact)
 

@@ -39,7 +39,7 @@
 {{/*         <button type="button" @click="selected = []">cancel</button> */}} 
 {{/*     </div> */}}
 {{/* </template> */}}
-<table>
+<table id="theContacts">
   <thead>
   <tr>
       <th></th>
@@ -52,7 +52,6 @@
   </thead>
   <tbody>
 {{         template "rows" .contacts }}
-  {{/* {% include 'rows.html' %} */}}
   </tbody>
 </table>
   {{/* <button hx-delete="/contacts" */}}
@@ -61,6 +60,18 @@
   {{/*     delete selected contacts */}}
   {{/* </button> */}}
 </form>
+<p>
+  <button
+    hx-get="/contacts/more"
+    hx-target="#theContacts"
+    hx-swap="outerHTML"
+  >More</button> 
+  <button
+      hx-get="/contacts/reset"
+      hx-target="#theContacts"
+      hx-swap="outerHTML"
+  >Reset</button>
+</p>
 <p>
   <a href="/contacts/new">Add Contact</a>
 </p>
