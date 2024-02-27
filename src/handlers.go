@@ -19,7 +19,7 @@ func GetContacts(c *fiber.Ctx) error {
 	limit := gSETS * gSETSIZE
 
 	if searchTerm == "" {
-		// => return all contacts as a list
+		// => return {limit}  contacts as a list
 		rawContacts, err := db.Qs.GetContacts(ctx, limit)
 		if err != nil || len(rawContacts) == 0 {
 			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
@@ -265,6 +265,30 @@ func ResetContacts(c *fiber.Ctx) error {
 		"contacts": contacts,
 		"query":    "",
 		"Flash":    fiberflash.Get(c),
+	})
+}
+
+func SearchContacts(c *fiber.Ctx) error {
+	ctx := context.Background()
+	searchTerm := fmt.Sprintf("%%%s%%", c.Query("q"))
+
+	theArgs := db.SearchContactsParams{
+		FirstName: sql.NullString{Valid: true, String: searchTerm},
+		LastName:  sql.NullString{Valid: true, String: searchTerm},
+		Phone:     sql.NullString{Valid: true, String: searchTerm},
+		Email:     sql.NullString{Valid: true, String: searchTerm},
+	}
+
+	rawContacts, err := db.Qs.SearchContacts(ctx, theArgs)
+	if err != nil || len(rawContacts) == 0 {
+		return c.SendString(fmt.Sprintf(
+			"<p>Too bad! No contacts found matching '%s'</p>",
+			searchTerm,
+		))
+	}
+	contacts := getProperContacts(rawContacts)
+	return c.Render("snippets/the_contacts", fiber.Map{
+		"contacts": contacts,
 	})
 }
 

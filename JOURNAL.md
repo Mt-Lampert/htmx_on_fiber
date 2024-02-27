@@ -3,6 +3,84 @@
 
 Nothing left at the moment
 
+## 2024-02-23 19:21
+
+- [x] implement auto-search feature
+    
+Auto-search means that you “automagically” get less results the more you type
+into the search field. In this case, I want the auto-search mechanism be
+triggered after I have typed at least four characters into the input field.
+
+Yes! It finally worked! Here's the working code:
+
+```html
+<!-- file: views/pages/contacts.go.html -->
+<div>
+  <label for="search">search term</label>
+  <input id="search" type="search" name="q" value="" placeholder="Search..."
+         hx-get="/contacts/search"
+         hx-trigger="keyup[this.value.length > 3] delay:200ms changed"
+         hx-target="#theContacts"
+  >
+</div>
+```
+
+#### Annotations
+
+1. The URL sent to the backend would be `/contacts/search?q={this.value}`.
+0. `hx-trigger` Translates to 
+    - trigger the GET request 
+    - when there is a change
+    - but only at a keyup event
+    - and only when `value` has at least 4 characters
+    - and then only after a delay of 200 milliseconds after the last keyup event
+0. `hx-target` declares where the resulting HTML from the server has to be included.
+
+
+### The handler
+
+```go
+func SearchContacts(c *fiber.Ctx) error {
+	ctx := context.Background()
+	searchTerm := fmt.Sprintf("%%%s%%", c.Query("q")) // -- 1 --
+
+	theArgs := db.SearchContactsParams{
+		FirstName: sql.NullString{Valid: true, String: searchTerm},
+        // ...
+	}
+
+	rawContacts, err := db.Qs.SearchContacts(ctx, theArgs)
+	if err != nil || len(rawContacts) == 0 {
+		return c.SendString(fmt.Sprintf(
+			"<p>Too bad! No contacts found matching '%s'</p>",
+			searchTerm,
+		))
+	}
+    // transform rawContacts into contacts we can use in the template
+	contacts := getProperContacts(rawContacts)
+	return c.Render("snippets/the_contacts", fiber.Map{
+		"contacts": contacts,
+	})
+}
+```
+
+The code is quite self-explanatory, with one exception.
+
+- `fmt.Sprintf("%%%s%%", c.Query("q"))`. If the `q` parameter was `ding`, then
+  `fmt.Sprintf()` would return `"%ding%"` – which is exactly what is needed in
+  an SQL query like this: `SELECT * FROM CONTACTS WHERE first_name LIKE
+  '%ding%';`
+
+
+
+__Lessons Learned:__ Stick to the details and read the error messages in the
+browser! At the first tries I wrote `hx-target="theTable"`, not
+`hx-target="#theTable"`. Since I did ___not___ read the error messages in the
+browser, I lost half a day wondering what might be wrong with the HTMX version
+I was using ...
+
+
+
 
 ## 2024-02-23 19:21
 

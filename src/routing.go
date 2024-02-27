@@ -4,8 +4,9 @@ import "github.com/gofiber/fiber/v2"
 
 func build_routing(app *fiber.App) {
 	app.Get("/", GetContacts)
-	app.Get("/contacts", GetContacts)
 	app.Get("/contacts/mailcheck", CheckEmail)
+	app.Get("/contacts/search", SearchContacts)
+	app.Get("/contacts", GetContacts)
 
 	app.Get("/contacts/more", MoreContacts)
 	app.Get("/contacts/reset", ResetContacts)

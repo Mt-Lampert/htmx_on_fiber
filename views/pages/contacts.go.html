@@ -6,22 +6,19 @@
 {{     if eq .Status "success" }}
 {{         $flashcolor = "color:green;" }}
 {{     else }}
-{{         $flashcolor = "color:red;" }}
+{{         $flashcolor = "color:#ffaa00;" }}
 {{     end }}
 <p style={{ $flashcolor }}>{{ .Msg }}</p>
 {{ end }}
 
-<form action="/contacts" method="get" class="tool-bar" style="padding-bottom:2rem">
+<div>
   <label for="search">search term</label>
-  <input id="search" type="search" name="q" value="{{ .query }}"
-         hx-get="/contacts"
-         hx-trigger="search, keyup delay:200ms changed"
-         hx-target="tbody"
-         hx-push-url="true"
-         hx-indicator="#spinner"/>
-  <img style="height: 20px" id="spinner" class="htmx-indicator" src="/img/spinning-circles.svg"/>
-  <input type="submit" value="search"/>
-</form>
+  <input id="search" type="search" name="q" value="" placeholder="Search..."
+         hx-get="/contacts/search"
+         hx-trigger="keyup[this.value.length > 3] delay:200ms changed"
+         hx-target="#theContacts"
+  >
+</div>
 
 {{/* <form x-data="{ selected: [] }"> */}}
 <form>
